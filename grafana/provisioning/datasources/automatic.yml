@@ -1,0 +1,12 @@
+apiVersion: 1
+
+datasources:
+- name: 中性账户监控
+  type: mysql
+  access: proxy
+  url: $mysql_host:$mysql_port
+  password: $mysql_password
+  user: $mysql_user
+  database: $mysql_database
+  isDefault: true
+  editable: true
