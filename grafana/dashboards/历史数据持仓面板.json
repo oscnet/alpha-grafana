@@ -1,0 +1,929 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 12,
+  "iteration": 1638155640288,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": false,
+      "title": "历史",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
+  "panels": [
+    {
+      "datasource": "中性账户监控",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "displayName": "PNL",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 7,
+        "x": 0,
+        "y": 0
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.0.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  \n  \n  timestamp(DATE_FORMAT(order_time,\"%Y-%m-%d\")),\n  sum(notional)\n  \nFROM $order\nWHERE\n  order_status = 'FILLED'\ngroup by timestamp(DATE_FORMAT(order_time,\"%Y-%m-%d\"))\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "index"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "psy_ns1_order",
+          "timeColumn": "order_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "",
+              "params": [
+                "order_status",
+                "=",
+                "'FILLED'"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "日成交额走势",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": "中性账户监控",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "dark-green",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "订单状态"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "FILLED": {
+                        "color": "dark-green",
+                        "index": 0,
+                        "text": "完全成交"
+                      },
+                      "NEW": {
+                        "color": "blue",
+                        "index": 2,
+                        "text": "下单"
+                      },
+                      "PARTIALLY_FILLED": {
+                        "color": "purple",
+                        "index": 1,
+                        "text": "部分成交"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 7,
+        "y": 0
+      },
+      "id": 13,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.0.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\n  sum(notional)\n\nFROM $order\nWHERE\n  order_status = 'FILLED' and order_time > curdate()\nORDER BY time",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "symbol"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "side"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "order_price"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "filled_price"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "order_quantity"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "filled_quantity"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "classic_compound_order",
+          "timeColumn": "time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "",
+              "params": [
+                "order_status",
+                "=",
+                "'FILLED'"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "今日成交总额",
+      "type": "stat"
+    },
+    {
+      "datasource": "中性账户监控",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1
+          },
+          "displayName": "PNL",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 14,
+        "x": 10,
+        "y": 0
+      },
+      "id": 11,
+      "options": {
+        "barWidth": 0.14,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "text": {},
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.0.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  \n  \n  DATE_FORMAT(order_time,\"%Y-%m-%d\"),\n  sum(cast(profit as DECIMAL(5)))\n  \nFROM $order\nWHERE\n  order_status = 'FILLED'\ngroup by DATE_FORMAT(order_time,\"%Y-%m-%d\")\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "index"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "psy_ns1_order",
+          "timeColumn": "order_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "",
+              "params": [
+                "order_status",
+                "=",
+                "'FILLED'"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "日PNL",
+      "transformations": [],
+      "type": "barchart"
+    },
+    {
+      "datasource": "中性账户监控",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "dark-green",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "订单状态"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "FILLED": {
+                        "color": "dark-green",
+                        "index": 0,
+                        "text": "完全成交"
+                      },
+                      "NEW": {
+                        "color": "blue",
+                        "index": 2,
+                        "text": "下单"
+                      },
+                      "PARTIALLY_FILLED": {
+                        "color": "purple",
+                        "index": 1,
+                        "text": "部分成交"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 3,
+        "x": 7,
+        "y": 4
+      },
+      "id": 14,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.0.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\n  sum(notional)\n\nFROM $order\nWHERE\n  order_status = 'FILLED'\nORDER BY time",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "symbol"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "side"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "order_price"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "filled_price"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "order_quantity"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "filled_quantity"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "classic_compound_order",
+          "timeColumn": "time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "",
+              "params": [
+                "order_status",
+                "=",
+                "'FILLED'"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "历史成交总额",
+      "type": "stat"
+    },
+    {
+      "datasource": "中性账户监控",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "订单状态"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "FILLED": {
+                        "color": "dark-green",
+                        "index": 0,
+                        "text": "完全成交"
+                      },
+                      "NEW": {
+                        "color": "blue",
+                        "index": 2,
+                        "text": "下单"
+                      },
+                      "PARTIALLY_FILLED": {
+                        "color": "purple",
+                        "index": 1,
+                        "text": "部分成交"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "id": 6,
+      "options": {
+        "barWidth": 0.23,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "text": {},
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.0.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  symbol,\n  sum(notional)\n\nFROM $order\nWHERE\n  order_status = 'FILLED' and time >curdate()\ngroup BY symbol",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "symbol"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "side"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "order_price"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "filled_price"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "order_quantity"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "filled_quantity"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "classic_compound_order",
+          "timeColumn": "time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "",
+              "params": [
+                "order_status",
+                "=",
+                "'FILLED'"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "今日成交币种分布",
+      "transformations": [
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "sum(notional)"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": "中性账户监控",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.0.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  \n  sum(notional),\n  side\n  \nFROM $order\nWHERE\n  order_status = 'FILLED' and order_time>curdate()\ngroup BY side",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "symbol"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "side"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "order_price"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "filled_price"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "order_quantity"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "filled_quantity"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "classic_compound_order",
+          "timeColumn": "time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "",
+              "params": [
+                "order_status",
+                "=",
+                "'FILLED'"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "今日下单金额多空比",
+      "type": "piechart"
+    }
+  ],
+  "schemaVersion": 30,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "psy_ns1_order",
+          "value": "psy_ns1_order"
+        },
+        "datasource": "中性账户监控",
+        "definition": "select table_name from information_schema.tables where table_schema='ns_data'",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "order",
+        "options": [],
+        "query": "select table_name from information_schema.tables where table_schema='ns_data'",
+        "refresh": 1,
+        "regex": "/order$/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "utc",
+  "title": "历史数据分析",
+  "uid": "B7fuYdtnk",
+  "version": 10
+}

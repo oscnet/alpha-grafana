@@ -1,0 +1,59 @@
+version: "3"
+services:
+
+  spider:
+    build: spider
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["python", "/app/supervisor.py" ]
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+    env_file:
+      - .env
+    volumes:
+      - ./spider:/app
+
+  db:
+    image: 'mysql:5.7'
+    # platform: linux/amd64   # 在 macOS M1 中需要打开
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent", "--password=${mysql_password}"]
+      interval: 3s
+      retries: 5
+      start_period: 30s
+    environment:
+      MYSQL_ROOT_PASSWORD: ${mysql_password} # 此处不对外开放端口，认为mysql较为安全
+      MYSQL_DATABASE: ${mysql_database}
+      TZ: Asia/Shanghai
+
+    env_file:
+      - .env
+
+  grafana:
+    image: 'grafana/grafana:8.1.8'
+    environment:
+      GF_INSTALL_PLUGINS: grafana-piechart-panel      
+    ports:
+      - "8899:3000"
+    volumes:
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/provisioning/datasources/automatic.yml:/etc/grafana/provisioning/datasources/automatic.yml
+      - ./grafana/provisioning/dashboards/all.yml:/etc/grafana/provisioning/dashboards/all.yml
+      - ./grafana/dashboards/:/var/lib/grafana/dashboards
+
+    env_file:
+      - .env
+
+
+
+
+
+
+
+
+
+
