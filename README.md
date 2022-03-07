@@ -33,14 +33,14 @@ mysql_port=3306
 
 ## 已知问题
 
-~~~1. macOs M1 mysql 镜像问题。~~~
+1. macOs M1 mysql 镜像问题。
 
    ~~~在 `docker-compose.yml` 中加入  `platform: linux/amd64`~~~
    已修复
 
 2. grafana 运行时插件 `grafana-piechart-panel` 下载失败。
    
-    网络问题，需要在 fq 环境。
+    网络问题，需要 fq 环境。
 
 ## 其它参考
 
