@@ -16,8 +16,7 @@ services:
       - ./spider:/app
 
   db:
-    image: 'mysql/mysql-server:5.7'
-    # platform: linux/amd64   # 在 macOS M1 中需要打开
+    image: 'mysql/mysql-server'
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     healthcheck:
@@ -26,7 +25,7 @@ services:
       retries: 5
       start_period: 30s
     environment:
-      MYSQL_ROOT_PASSWORD: ${mysql_password} # 此处不对外开放端口，认为mysql较为安全
+      MYSQL_ROOT_PASSWORD: ${mysql_password}
       MYSQL_DATABASE: ${mysql_database}
       MYSQL_ROOT_HOST: '%'
       TZ: Asia/Shanghai
