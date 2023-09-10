@@ -7,7 +7,7 @@
 3. docker-compose up -d 
 4. 稍等几分钟，等容器运行准备完成后，打开浏览器，输入网址 http://localhost:8899 , 初始用户名密码为：admin, admin,然后再设置 admin 密码后登录，选择实时持仓面板，就可以看到当前仓位了，其它数据一般要运行1个多小时后才能显示。
 
-所有配置都在 .env 文件中。配置示例：
+所有配置都在 .env 文件中(注意 .env 为隐藏文件，Linux 下使用 ls -al 可看到)。配置示例：
 ```
 # 配置信息
 
@@ -19,8 +19,8 @@
 # 例如我取一个帐户名为 yxd01, 则配置如下：
 
 account_yxd01_cash=1000
-account_yxd01_apiKey=ReUQ5erxopO3W0gS1Ll3leCn8112Osi9cTrFMz9lhqvJWEWBUoxVJmqDUlItpQci
-account_yxd01_secret=dxDuKtA7W58zSak6rZdLXvivSkJicvu5jWgxY2VHrNPV5655mfj5Geo65xp2t1bl
+account_yxd01_apiKey=ReUQ..............qDUlItpQci
+account_yxd01_secret=dxDuK.............o65xp2t1bl
 
 # 2、配置钉钉提醒，如果有公众号的可以配置，没有的也可不管它
 wechat_secret=FoJsxkyVOs
