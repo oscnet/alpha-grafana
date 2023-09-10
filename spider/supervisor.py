@@ -97,6 +97,12 @@ def future_order():
 alert = WeChat('NsSupervisor')
 account_list = API_DICT.keys()
 future_order()
+
+# add by oscar
+future_cash()
+future_balance()
+future_position()
+
 schedule.every().hour.at(":03").do(future_cash)  # 每小时的03分钟时记录账户资金
 schedule.every().hour.at(":10").do(future_balance)  # 每小时的03分钟时记录账户资金
 schedule.every().minute.at(":10").do(future_position)  # 每分钟10s的时候更新仓位

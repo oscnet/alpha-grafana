@@ -5,7 +5,9 @@ from utils.exchange import BinanceTrade
 from datetime import datetime
 
 from sqlalchemy import create_engine
-from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
+# from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
+from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
+
 import time
 import threading
 from config import database_config as dc_
