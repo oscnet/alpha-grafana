@@ -39,10 +39,17 @@ mysql_port=3306
 
 ## 问题调试
 
-### 重建 
+### 如何无损升级到 v1.1.0
 
+* 保存原来的 .env 配置文件为 .env.save ,
+* 下载后的文件覆盖原来的文件
+* 然后执行以下命令：
+```
+cp .env.save .env
+docker rm alpha-grafana-spider-1 
 docker rmi alpha-grafana-spider 
-docker-compose up
+docker-compose up -d 
+```
 
 
 ## 更新
